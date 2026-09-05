@@ -131,8 +131,7 @@ function TitleSlide() {
 
 function PremiseSlide() {
   return (
-    <section className="slide-frame split-slide">
-      <SlideHeader slide={slides[1]} />
+    <section className="slide-frame split-slide premise-slide">
       <div className="premise-layout">
         <div className="premise-argument">
           <span className="micro-label">PREMISA</span>
@@ -154,7 +153,18 @@ function AmbiguitySlide() {
     <section className="slide-frame split-slide">
       <SlideHeader slide={slides[2]} />
       <div className="ambiguity-layout">
-        <div className="risk-visual"><div className="risk-line" /><span className="risk-node">?</span><span className="risk-label">suposición</span><div className="risk-branch" /><span className="risk-node risk-node-small">×</span><span className="risk-label risk-label-right">resultado</span></div>
+        <div className="risk-visual" role="img" aria-label="Una línea azul de suposición llega a un nodo de pregunta y continúa como una línea roja hasta el resultado">
+          <svg viewBox="0 0 640 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <line x1="32" y1="210" x2="274" y2="118" className="risk-path risk-path-blue" />
+            <line x1="274" y1="118" x2="570" y2="216" className="risk-path risk-path-red" />
+            <circle cx="274" cy="118" r="24" className="risk-svg-node risk-svg-question" />
+            <text x="274" y="127" textAnchor="middle" className="risk-svg-symbol risk-svg-question-text">?</text>
+            <text x="274" y="66" textAnchor="middle" className="risk-svg-label">suposición</text>
+            <circle cx="570" cy="216" r="20" className="risk-svg-node risk-svg-result" />
+            <text x="570" y="223" textAnchor="middle" className="risk-svg-symbol risk-svg-result-text">×</text>
+            <text x="570" y="272" textAnchor="middle" className="risk-svg-label">resultado</text>
+          </svg>
+        </div>
         <div>
           <BulletList items={['La ambigüedad obliga a suponer', 'Las suposiciones producen implementaciones incorrectas', 'En desarrollo agéntico, una instrucción ambigua escala el riesgo']} />
           <QuoteBlock label="FÓRMULA DE RIESGO"><strong>Riesgo</strong> <span>=</span> Autonomía <span>+</span> (Ambigüedad <span>×</span> Suposiciones)</QuoteBlock>
