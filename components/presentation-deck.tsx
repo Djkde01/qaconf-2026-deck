@@ -122,8 +122,7 @@ function TitleSlide() {
         <p className="title-hint"><MousePointer2 size={13} /> Usa ← / → o haz click a los lados para navegar</p>
       </div>
       <div className="speaker-placeholder" aria-label="Sergio Estrella">
-        <div className="placeholder-grid" />
-        <span className="speaker-image-pending">Sergio Estrella</span>
+        <img src="/images/speaker.png" alt="Sergio Estrella" className="speaker-image" />
       </div>
     </section>
   )
