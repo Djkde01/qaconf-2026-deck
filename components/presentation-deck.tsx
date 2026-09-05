@@ -297,6 +297,7 @@ const resources = [
   ['Deep Work Plan', 'https://deepworkplan.com/'],
   ['Ponytail', 'https://github.com/DietrichGebert/ponytail'],
   ['Grill Me', 'https://www.aihero.dev/skills-grill-me'],
+  ['Spec template', 'https://github.com/Djkde01/qaconf-2026-deck/blob/main/docs/spec-template.md'],
   ['Código y slides', 'https://github.com/Djkde01/qaconf-2026-deck'],
 ] as const
 

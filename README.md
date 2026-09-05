@@ -6,6 +6,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v
 
 This repository is linked to a [v0](https://v0.app) project. Every merge to `main` will automatically deploy.
 
+## Resources
+
+- [Spec Driven Development template](./docs/spec-template.md)
+
 ## Getting Started
 
 First, run the development server:
