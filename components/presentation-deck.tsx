@@ -134,8 +134,16 @@ function PremiseSlide() {
     <section className="slide-frame split-slide">
       <SlideHeader slide={slides[1]} />
       <div className="premise-layout">
+        <div className="premise-argument">
+          <span className="micro-label">PREMISA</span>
+          <h2>El problema no era la IA.</h2>
+          <p>Era el requerimiento.</p>
+        </div>
+        <div className="premise-bullets">
+          <span className="micro-label">LO QUE CAMBIÓ</span>
+          <BulletList items={['El foco se movió de programar más rápido a delegar más trabajo', 'Pero delegar sin claridad amplifica errores', 'El problema real no era la IA: era la ambigüedad del requerimiento']} />
+        </div>
         <div className="premise-quote"><span className="quote-mark">“</span><p>Matamos la programación para poner la IA en su lugar… solo para descubrir que el verdadero problema era el requisito.</p></div>
-        <BulletList items={['El foco se movió de programar más rápido a delegar más trabajo', 'Pero delegar sin claridad amplifica errores', 'El problema real no era la IA: era la ambigüedad del requerimiento']} />
       </div>
     </section>
   )
