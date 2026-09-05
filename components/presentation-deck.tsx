@@ -149,7 +149,7 @@ function AmbiguitySlide() {
         <div className="risk-visual"><div className="risk-line" /><span className="risk-node">?</span><span className="risk-label">suposición</span><div className="risk-branch" /><span className="risk-node risk-node-small">×</span><span className="risk-label risk-label-right">resultado</span></div>
         <div>
           <BulletList items={['La ambigüedad obliga a suponer', 'Las suposiciones producen implementaciones incorrectas', 'En desarrollo agéntico, una instrucción ambigua escala el riesgo']} />
-          <QuoteBlock label="FÓRMULA DE RIESGO">Ambigüedad <span>+</span> autonomía <span>=</span> riesgo</QuoteBlock>
+          <QuoteBlock label="FÓRMULA DE RIESGO"><strong>Riesgo</strong> <span>=</span> Autonomía <span>+</span> (Ambigüedad <span>×</span> Suposiciones)</QuoteBlock>
         </div>
       </div>
     </section>
@@ -235,12 +235,27 @@ const helpers = [
   ['Gentle AI', 'Configura TDD, SDD y RDD con el agente de preferencia', Sparkles], ['/grill-me', 'Interroga ambigüedades y supuestos antes de escribir el spec', CircleHelp], ['/ponytail', 'Implementa con el mínimo código posible para pasar tests', Zap], ['Deep-work plan', 'Acompaña requisitos grandes o prolongados', GitBranch],
 ] as const
 
+function HelperCard({ helper }: { helper: typeof helpers[number] }) {
+  const [label, description, Icon] = helper
+  return <article className="helper-card"><Icon size={20} /><h2>{label}</h2><p>{description}</p><ArrowRight size={18} className="helper-arrow" /></article>
+}
+
 function PracticeSlide() {
+  const harnessHelpers = [helpers[0], helpers[3]]
+  const skillHelpers = [helpers[1], helpers[2]]
+
   return (
     <section className="slide-frame">
       <SlideHeader slide={slides[7]} />
-      <div className="helper-grid">
-        {helpers.map(([label, description, Icon]) => <article className="helper-card" key={label}><Icon size={20} /><span className="micro-label">WORKFLOW HELPER</span><h2>{label}</h2><p>{description}</p><ArrowRight size={18} className="helper-arrow" /></article>)}
+      <div className="helper-groups">
+        <section className="helper-group helper-group-harness" aria-labelledby="harness-heading">
+          <div className="helper-group-header"><span className="micro-label">INFRAESTRUCTURA</span><h2 id="harness-heading">HARNESS / WORKFLOW</h2></div>
+          <div className="helper-group-grid">{harnessHelpers.map((helper) => <HelperCard helper={helper} key={helper[0]} />)}</div>
+        </section>
+        <section className="helper-group helper-group-skills" aria-labelledby="skills-heading">
+          <div className="helper-group-header"><span className="micro-label">CAPACIDADES</span><h2 id="skills-heading">SKILLS</h2></div>
+          <div className="helper-group-grid">{skillHelpers.map((helper) => <HelperCard helper={helper} key={helper[0]} />)}</div>
+        </section>
       </div>
       <p className="helper-note">El método es el centro. Las herramientas son reemplazables.</p>
     </section>
