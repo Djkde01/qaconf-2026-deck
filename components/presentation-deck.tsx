@@ -23,7 +23,7 @@ import {
   Zap,
 } from 'lucide-react'
 
-type SlideComponent = () => React.ReactNode
+type SlideComponent = (step: number) => React.ReactNode
 
 type Slide = {
   id: string
@@ -31,21 +31,21 @@ type Slide = {
   title: string
   kicker?: string
   component: SlideComponent
-  stepCount?: number
+  stepCount: number
 }
 
 const slides: Slide[] = [
-  { id: 'title', eyebrow: 'QA CONF 2026 · 10 MIN', title: 'Spec Driven Development', kicker: 'Calidad asegurada desde el requerimiento', component: TitleSlide },
-  { id: 'premise', eyebrow: '01 / PREMISA', title: 'El problema no era la IA.', kicker: 'Era el requerimiento.', component: PremiseSlide },
-  { id: 'ambiguity', eyebrow: '02 / EL ENEMIGO REAL', title: 'La ambigüedad escala.', kicker: 'Y la autonomía también.', component: AmbiguitySlide },
-  { id: 'comparison', eyebrow: '03 / ANTES DE LA IA', title: 'Esto ya pasaba antes.', kicker: 'Solo que más lento.', component: ComparisonSlide },
-  { id: 'proposal', eyebrow: '04 / LA PROPUESTA', title: 'Spec Driven Development', kicker: 'Un marco claro antes del código.', component: FlowSlide },
-  { id: 'anatomy', eyebrow: '05 / ANATOMÍA', title: 'Un buen spec deja poco espacio para suponer.', kicker: 'Seis piezas. Una intención compartida.', component: AnatomySlide },
-  { id: 'quality', eyebrow: '06 / CALIDAD', title: 'Que el spec no sea un saludo a la bandera.', kicker: 'Verificable. Automatizado. Revisado.', component: QualitySlide },
-  { id: 'practice', eyebrow: '07 / EN LA PRÁCTICA', title: 'Cómo lo implemento hoy.', kicker: 'El método vive en el flujo.', component: PracticeSlide },
-  { id: 'change', eyebrow: '08 / LO QUE CAMBIA', title: 'Las herramientas cambian.', kicker: 'El objetivo permanece.', component: ChangeSlide },
-  { id: 'reflection', eyebrow: '09 / REFLEXIÓN', title: 'La calidad no empieza en el código.', kicker: 'Empieza en el spec.', component: ClosingSlide },
-  { id: 'resources', eyebrow: '10 / RECURSOS', title: 'Para seguir la conversación.', kicker: 'Llévate el método, no solo las herramientas.', component: ResourcesSlide },
+  { id: 'title', eyebrow: 'QA CONF 2026 · 10 MIN', title: 'Spec Driven Development', kicker: 'Calidad asegurada desde el requerimiento', component: TitleSlide, stepCount: 1 },
+  { id: 'premise', eyebrow: '01 / PREMISA', title: 'El problema no era la IA.', kicker: 'Era el requerimiento.', component: PremiseSlide, stepCount: 2 },
+  { id: 'ambiguity', eyebrow: '02 / EL ENEMIGO REAL', title: 'La ambigüedad escala.', kicker: 'Y la autonomía también.', component: AmbiguitySlide, stepCount: 2 },
+  { id: 'comparison', eyebrow: '03 / ANTES DE LA IA', title: 'Esto ya pasaba antes.', kicker: 'Solo que más lento.', component: ComparisonSlide, stepCount: 4 },
+  { id: 'proposal', eyebrow: '04 / LA PROPUESTA', title: 'Spec Driven Development', kicker: 'Un marco claro antes del código.', component: FlowSlide, stepCount: 1 },
+  { id: 'anatomy', eyebrow: '05 / ANATOMÍA', title: 'Un buen spec deja poco espacio para suponer.', kicker: 'Seis piezas. Una intención compartida.', component: AnatomySlide, stepCount: 6 },
+  { id: 'quality', eyebrow: '06 / CALIDAD', title: 'Que el spec no sea un saludo a la bandera.', kicker: 'Verificable. Automatizado. Revisado.', component: QualitySlide, stepCount: 4 },
+  { id: 'practice', eyebrow: '07 / EN LA PRÁCTICA', title: 'Cómo lo implemento hoy.', kicker: 'El método vive en el flujo.', component: PracticeSlide, stepCount: 1 },
+  { id: 'change', eyebrow: '08 / LO QUE CAMBIA', title: 'Las herramientas cambian.', kicker: 'El objetivo permanece.', component: ChangeSlide, stepCount: 1 },
+  { id: 'reflection', eyebrow: '09 / REFLEXIÓN', title: 'La calidad no empieza en el código.', kicker: 'Empieza en el spec.', component: ClosingSlide, stepCount: 1 },
+  { id: 'resources', eyebrow: '10 / RECURSOS', title: 'Para seguir la conversación.', kicker: 'Llévate el método, no solo las herramientas.', component: ResourcesSlide, stepCount: 1 },
 ]
 
 function SlideHeader({ slide }: { slide: Slide }) {
@@ -129,67 +129,53 @@ function TitleSlide() {
   )
 }
 
-function PremiseSlide() {
+function PremiseSlide(step: number) {
   return (
     <section className="slide-frame split-slide premise-slide">
       <div className="premise-layout">
-        <div className="premise-argument">
-          <span className="micro-label">PREMISA</span>
-          <h2>El problema no era la IA.</h2>
-          <p>Era el requerimiento.</p>
-        </div>
-        <div className="premise-bullets">
-          <span className="micro-label">LO QUE CAMBIÓ</span>
-          <BulletList items={['El foco se movió de programar más rápido a delegar más trabajo', 'Pero delegar sin claridad amplifica errores', 'El problema real no era la IA: era la ambigüedad del requerimiento']} />
-        </div>
-        <div className="premise-quote"><span className="quote-mark">“</span><p>Matamos la programación para poner la IA en su lugar… solo para descubrir que el verdadero problema era el requisito.</p></div>
+        <div key={`premise-quote-${step}`} className="premise-quote progressive-quote"><span className="quote-mark">“</span><p>Matamos la programación para poner la IA en su lugar… solo para descubrir que el verdadero problema era el requisito.</p></div>
+        {step > 0 && <div key="premise-argument" className="premise-argument progressive-top-row progressive-slide-in"><span className="micro-label">PREMISA</span><h2>El problema no era la IA.</h2><p>Era el requerimiento.</p></div>}
+        {step > 0 && <div key="premise-bullets" className="premise-bullets progressive-top-row progressive-slide-in progressive-slide-in-delay"><span className="micro-label">LO QUE CAMBIÓ</span><BulletList items={['El foco se movió de programar más rápido a delegar más trabajo', 'Pero delegar sin claridad amplifica errores', 'El problema real no era la IA: era la ambigüedad del requerimiento']} /></div>}
       </div>
     </section>
   )
 }
 
-function AmbiguitySlide() {
+function AmbiguitySlide(step: number) {
   return (
     <section className="slide-frame split-slide ambiguity-slide">
       <SlideHeader slide={slides[2]} />
       <div className="ambiguity-layout">
-        <div className="risk-visual" role="img" aria-label="Una línea azul de suposición llega a un nodo de pregunta y continúa como una línea roja hasta el resultado">
+        <div className="risk-visual progressive-slide-in" role="img" aria-label="Una línea azul de suposición llega a un nodo de pregunta y continúa como una línea roja hasta el resultado">
           <svg viewBox="0 0 640 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="32" y1="210" x2="274" y2="118" className="risk-path risk-path-blue" />
-            <line x1="274" y1="118" x2="570" y2="216" className="risk-path risk-path-red" />
+            <line x1="32" y1="210" x2="274" y2="118" pathLength="1" className="risk-path risk-path-blue" />
+            <line x1="274" y1="118" x2="570" y2="216" pathLength="1" className="risk-path risk-path-red" />
             <circle cx="274" cy="118" r="24" className="risk-svg-node risk-svg-question" />
             <text x="274" y="127" textAnchor="middle" className="risk-svg-symbol risk-svg-question-text">?</text>
-            <text x="274" y="66" textAnchor="middle" className="risk-svg-label">suposición</text>
+            <text x="274" y="66" textAnchor="middle" className="risk-svg-label risk-svg-question-label">suposición</text>
             <circle cx="570" cy="216" r="20" className="risk-svg-node risk-svg-result" />
             <text x="570" y="223" textAnchor="middle" className="risk-svg-symbol risk-svg-result-text">×</text>
-            <text x="570" y="272" textAnchor="middle" className="risk-svg-label">resultado</text>
+            <text x="570" y="272" textAnchor="middle" className="risk-svg-label risk-svg-result-label">resultado</text>
           </svg>
         </div>
-        <div>
-          <BulletList items={['La ambigüedad obliga a suponer', 'Las suposiciones producen implementaciones incorrectas', 'En desarrollo agéntico, una instrucción ambigua escala el riesgo']} />
-          <QuoteBlock label="FÓRMULA DE RIESGO"><strong>Riesgo</strong> <span>=</span> Autonomía <span>+</span> (Ambigüedad <span>×</span> Suposiciones)</QuoteBlock>
+        <div className="ambiguity-copy progressive-slide-in progressive-slide-in-delay"><BulletList items={['La ambigüedad obliga a suponer', 'Las suposiciones producen implementaciones incorrectas', 'En desarrollo agéntico, una instrucción ambigua escala el riesgo']} />
+          {step > 0 && <div key="ambiguity-formula" className="ambiguity-formula progressive-slide-from-right"><QuoteBlock label="FÓRMULA DE RIESGO"><strong>Riesgo</strong> <span>=</span> Autonomía <span>+</span> (Ambigüedad <span>×</span> Suposiciones)</QuoteBlock></div>}
         </div>
       </div>
     </section>
   )
 }
 
-function ComparisonSlide() {
+function ComparisonSlide(step: number) {
   return (
     <section className="slide-frame">
-      <SlideHeader slide={slides[3]} />
+      <div key={`comparison-header-${step}`} className="progressive-slide-in"><SlideHeader slide={slides[3]} /></div>
       <div className="comparison-grid">
-        <article className="comparison-card">
-          <div className="card-icon"><UserRound size={20} /></div><span className="micro-label">ANTES</span><h2>Junior</h2>
-          <p>Con instrucciones vagas construye algo incorrecto.</p><div className="card-foot"><span>1 persona</span><span className="status-dot muted" /> <span>riesgo acotado</span></div>
-        </article>
-        <div className="multiplier" aria-label="multiplicado por cien"><span>×</span><strong>100</strong><small>autonomía</small></div>
-        <article className="comparison-card highlighted">
-          <div className="card-icon"><Sparkles size={20} /></div><span className="micro-label">AHORA</span><h2>Agente</h2>
-          <p>Hace lo mismo, pero a velocidad y escala de máquina.</p><div className="card-foot"><span>más velocidad</span><span className="status-dot" /> <span>más superficie de riesgo</span></div>
-        </article>
+        {step > 0 && <article key="junior" className="comparison-card progressive-slide-from-left"><div className="card-icon"><UserRound size={20} /></div><span className="micro-label">ANTES</span><h2>Junior</h2><p>Con instrucciones vagas construye algo incorrecto.</p><div className="card-foot"><span>1 persona</span><span className="status-dot muted" /> <span>riesgo acotado</span></div></article>}
+        {step > 1 && <div key="multiplier" className="multiplier progressive-slide-in" aria-label="multiplicado por cien"><span>×</span><strong>100</strong><small>autonomía</small></div>}
+        {step > 1 && <article key="agent" className="comparison-card highlighted progressive-slide-from-right"><div className="card-icon"><Sparkles size={20} /></div><span className="micro-label">AHORA</span><h2>Agente</h2><p>Hace lo mismo, pero a velocidad y escala de máquina.</p><div className="card-foot"><span>más velocidad</span><span className="status-dot" /> <span>más superficie de riesgo</span></div></article>}
       </div>
-      <p className="bottom-statement">Más velocidad y más autonomía sin claridad <span>=</span> más probabilidad de construir lo equivocado.</p>
+      {step > 2 && <p key="comparison-conclusion" className="bottom-statement progressive-slide-in progressive-slide-in-delay">Más velocidad y más autonomía sin claridad <span>=</span> más probabilidad de construir lo equivocado.</p>}
     </section>
   )
 }
@@ -200,17 +186,17 @@ const flowSteps = [
 
 function FlowSlide() {
   return (
-    <section className="slide-frame">
-      <SlideHeader slide={slides[4]} />
-      <div className="flow-visual">
+    <section className="slide-frame flow-slide">
+      <div className="progressive-slide-in"><SlideHeader slide={slides[4]} /></div>
+      <div className="flow-visual progressive-flow" aria-label="Flujo de requisito a aprobación humana">
         {flowSteps.map(([number, label, Icon], index) => (
-          <div className="flow-item" key={label}>
+          <div className="flow-item" style={{ '--flow-index': index } as React.CSSProperties} key={label}>
             <div className="flow-icon"><Icon size={24} /></div><span className="flow-number">{number}</span><strong>{label}</strong>
             {index < flowSteps.length - 1 && <ArrowRight className="flow-arrow" size={22} aria-hidden="true" />}
           </div>
         ))}
       </div>
-      <p className="flow-note"><LockKeyhole size={16} /> El agente ejecuta dentro de un marco claro. La intención sigue siendo humana.</p>
+      <p className="flow-note progressive-flow-note"><LockKeyhole size={16} /> El agente ejecuta dentro de un marco claro. La intención sigue siendo humana.</p>
     </section>
   )
 }
@@ -219,31 +205,39 @@ const anatomy = [
   ['Contexto', 'Qué pasa hoy y por qué cambiarlo', Layers3], ['Requisito', 'Qué se solicita exactamente', FileText], ['Acceptance Criteria', 'Cómo sabemos que está bien', Check], ['Out of Scope', 'Qué NO se debe tocar', X], ['Sources', 'De dónde sale la solicitud', Link2], ['Blockers / Blocking', 'Dependencias y bloqueos', LockKeyhole],
 ] as const
 
-function AnatomySlide() {
+function AnatomySlide(step: number) {
+  const numericStep = Number(step)
+  const selectedIndex = Number.isFinite(numericStep) ? Math.max(0, Math.min(numericStep, anatomy.length - 1)) : 0
+  const selectedAnatomy = anatomy[selectedIndex] ?? anatomy[0]
+  const [label, description, Icon] = selectedAnatomy
   return (
-    <section className="slide-frame">
-      <SlideHeader slide={slides[5]} />
-      <div className="anatomy-grid">
-        {anatomy.map(([label, description, Icon], index) => (
-          <article className="anatomy-card" key={label}><span className="anatomy-index">0{index + 1}</span><Icon size={20} /><h2>{label}</h2><p>{description}</p></article>
-        ))}
+    <section className="slide-frame anatomy-slide">
+      <div className="progressive-slide-in"><SlideHeader slide={slides[5]} /></div>
+      <div className="anatomy-detail progressive-detail" key={`anatomy-detail-${selectedIndex}`}><div className="anatomy-detail-icon"><Icon size={34} /></div><div><span className="anatomy-index">0{selectedIndex + 1} / 06</span><h2>{label}</h2><p>{description}</p></div></div>
+      <div className="anatomy-row" aria-label="Partes del spec">
+        {anatomy.map(([itemLabel, itemDescription, ItemIcon], index) => <div key={itemLabel} className={`anatomy-compact ${index === selectedIndex ? 'is-selected' : ''}`} aria-current={index === selectedIndex ? 'step' : undefined}><ItemIcon size={17} /><strong>{itemLabel}</strong><span>{itemDescription}</span></div>)}
       </div>
     </section>
   )
 }
 
-function QualitySlide() {
+const qualityGates = [
+  ['TDD + SDD', 'El spec define el comportamiento. Los tests lo vuelven verificable.'],
+  ['CI', 'Unit tests · E2E · lint · type checks'],
+  ['Human in the loop', 'La aprobación final sigue siendo humana.'],
+  ['RDD', 'La revisión se ata a evidencia / recibo. Si el código cambia después de aprobarlo, la aprobación deja de ser válida y debe revisarse nuevamente.'],
+] as const
+
+function QualitySlide(step: number) {
+  const focusedIndex = Number.isFinite(Number(step)) ? Math.max(0, Math.min(Number(step), qualityGates.length - 1)) : 0
   return (
-    <section className="slide-frame">
-      <SlideHeader slide={slides[6]} />
+    <section className="slide-frame quality-slide">
+      <div className="progressive-slide-in"><SlideHeader slide={slides[6]} /></div>
       <div className="quality-layout">
-        <div className="quality-gates">
-          <div className="gate gate-one"><span>01</span><strong>TDD + SDD</strong><small>El spec define el comportamiento. Los tests lo vuelven verificable.</small></div>
-          <div className="gate gate-two"><span>02</span><strong>CI</strong><small>Unit tests · E2E · lint · type checks</small></div>
-          <div className="gate gate-three"><span>03</span><strong>Human in the loop</strong><small>La aprobación final sigue siendo humana.</small></div>
-          <div className="gate gate-four"><span>04</span><strong>RDD</strong><small>La revisión se ata a evidencia / recibo. Si el código cambia después de aprobarlo, la aprobación deja de ser válida y debe revisarse nuevamente.</small></div>
+        <div className="quality-gates progressive-quality-gates">
+          {qualityGates.map(([label, description], index) => <div className={`gate gate-${index + 1} ${index === focusedIndex ? 'is-focused' : ''}`} key={label}><span>0{index + 1}</span><strong>{label}</strong><small>{description}</small></div>)}
         </div>
-        <div className="quality-side"><ShieldCheck size={42} /><p>La calidad aparece cuando cada capa puede responder: <strong>“¿Cómo lo sabemos?”</strong></p></div>
+        <div className="quality-side progressive-quality-side"><ShieldCheck size={42} /><p>La calidad aparece cuando cada capa puede responder: <strong>“¿Cómo lo sabemos?”</strong></p></div>
       </div>
     </section>
   )
@@ -312,7 +306,7 @@ function ResourcesSlide() {
 }
 
 function isInteractiveTarget(target: EventTarget | null) {
-  return target instanceof HTMLElement && Boolean(target.closest('button, a, input, textarea, select, [contenteditable="true"], [data-slide-interactive]'))
+  return target instanceof Element && Boolean(target.closest('button, a, input, textarea, select, [contenteditable="true"], [data-slide-interactive]'))
 }
 
 function isEditableTarget(target: EventTarget | null) {
@@ -323,7 +317,7 @@ export function PresentationDeck() {
   const [current, setCurrent] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
   const activeSlide = slides[current]
-  const activeStepCount = activeSlide.stepCount ?? 1
+  const activeStepCount = activeSlide.stepCount
 
   const goTo = useCallback((next: number) => {
     setCurrent(Math.max(0, Math.min(slides.length - 1, next)))
@@ -364,7 +358,7 @@ export function PresentationDeck() {
       event.clientX >= window.innerWidth / 2 ? goNext() : goPrevious()
     }}>
       <div className="ambient-grid" aria-hidden="true" />
-      <SlideEntrance key={activeSlide.id} className="slide-stage">{activeSlide.component()}</SlideEntrance>
+      <SlideEntrance key={activeSlide.id} className="slide-stage">{activeSlide.component(currentStep)}</SlideEntrance>
       <div className="presentation-chrome">
         <div className="progress-track" aria-label={`Diapositiva ${current + 1} de ${slides.length}`}><span style={{ width: `${((current + 1) / slides.length) * 100}%` }} /></div>
         <div className="chrome-bottom"><span className="slide-count">{String(current + 1).padStart(2, '0')} <i>/</i> {String(slides.length).padStart(2, '0')}</span><div className="nav-controls"><button onClick={goPrevious} disabled={current === 0 && currentStep === 0} aria-label="Diapositiva anterior"><ArrowLeft size={16} /></button><button onClick={goNext} disabled={current === slides.length - 1 && currentStep === activeStepCount - 1} aria-label="Diapositiva siguiente"><ArrowRight size={16} /></button></div><span className="keyboard-hint"><MousePointer2 size={13} /> click / ← →</span></div>
