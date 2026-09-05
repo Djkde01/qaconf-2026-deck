@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import QRCode from 'react-qr-code'
 import {
   ArrowLeft,
   ArrowRight,
@@ -23,7 +24,7 @@ import {
   Zap,
 } from 'lucide-react'
 
-type SlideComponent = (step: number) => React.ReactNode
+type SlideComponent = (step: number, presentationUrl: string) => React.ReactNode
 
 type Slide = {
   id: string
@@ -114,16 +115,14 @@ function TitleSlide() {
         <h1>Spec Driven <span>Development</span></h1>
         <p className="title-subtitle">Calidad asegurada desde el requerimiento</p>
         <div className="speaker-meta">
-          <div><span>[Speaker Name]</span><small>[Speaker Role]</small></div>
+          <div><span>Sergio Estrella</span><small>Forward Deployed Engineer</small></div>
           <div className="meta-divider" />
-          <span>[Event Name]</span>
+          <span>QA Conf</span>
         </div>
         <p className="title-hint"><MousePointer2 size={13} /> Usa ← / → o haz click a los lados para navegar</p>
       </div>
-      <div className="speaker-placeholder" aria-label="[Speaker Image]">
-        <div className="placeholder-grid" />
-        <div className="placeholder-avatar"><UserRound size={58} strokeWidth={1} /></div>
-        <span>[Speaker Image]</span>
+      <div className="speaker-placeholder" aria-label="Sergio Estrella">
+        <img src="/images/speaker.png" alt="Sergio Estrella" className="speaker-image" />
       </div>
     </section>
   )
@@ -293,13 +292,27 @@ function ClosingSlide() {
   )
 }
 
-const resources = ['Ejemplo de spec', 'Recursos de la charla', 'TDD + SDD checklist', 'Herramientas mencionadas', 'Repositorio / demo']
+const resources = [
+  ['Gentle AI', 'https://github.com/Gentleman-Programming/gentle-ai/'],
+  ['Deep Work Plan', 'https://deepworkplan.com/'],
+  ['Ponytail', 'https://github.com/DietrichGebert/ponytail'],
+  ['Grill Me', 'https://www.aihero.dev/skills-grill-me'],
+  ['Código y slides', 'https://github.com/Djkde01/qaconf-2026-deck'],
+] as const
 
-function ResourcesSlide() {
+function ResourcesSlide(_step: number, presentationUrl: string) {
   return (
     <section className="slide-frame resources-slide">
       <SlideHeader slide={slides[10]} />
-      <div className="resources-layout"><div className="qr-placeholder"><div className="qr-pattern" /><span>[QR Placeholder]</span></div><div className="resource-list">{resources.map((resource, index) => <a href="#resources" key={resource} className="resource-link" data-slide-interactive><span>0{index + 1}</span><strong>{resource}</strong><small>[Resource Link {index + 1}]</small><ExternalLink size={16} /></a>)}</div></div>
+      <div className="resources-layout">
+        <div className="qr-placeholder" aria-label="Código QR para abrir esta presentación">
+          {presentationUrl ? <QRCode value={presentationUrl} size={194} bgColor="#eef3fb" fgColor="#080b12" level="M" /> : <div className="qr-loading" aria-hidden="true" />}
+          <span>Slides</span>
+        </div>
+        <div className="resource-list">
+          {resources.map(([label, url], index) => <a href={url} key={label} className="resource-link" data-slide-interactive target="_blank" rel="noopener noreferrer" aria-label={`${label} (abre en una pestaña nueva)`}><span>0{index + 1}</span><strong>{label}</strong><small>{new URL(url).hostname.replace('www.', '')}</small><ExternalLink size={16} aria-hidden="true" /></a>)}
+        </div>
+      </div>
       <p className="resource-footer">Gracias · QA Conf 2026</p>
     </section>
   )
@@ -316,8 +329,13 @@ function isEditableTarget(target: EventTarget | null) {
 export function PresentationDeck() {
   const [current, setCurrent] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
+  const [presentationUrl, setPresentationUrl] = useState('')
   const activeSlide = slides[current]
   const activeStepCount = activeSlide.stepCount
+
+  useEffect(() => {
+    setPresentationUrl(`${window.location.origin}${window.location.pathname}`)
+  }, [])
 
   const goTo = useCallback((next: number) => {
     setCurrent(Math.max(0, Math.min(slides.length - 1, next)))
@@ -358,7 +376,7 @@ export function PresentationDeck() {
       event.clientX >= window.innerWidth / 2 ? goNext() : goPrevious()
     }}>
       <div className="ambient-grid" aria-hidden="true" />
-      <SlideEntrance key={activeSlide.id} className="slide-stage">{activeSlide.component(currentStep)}</SlideEntrance>
+      <SlideEntrance key={activeSlide.id} className="slide-stage">{activeSlide.component(currentStep, presentationUrl)}</SlideEntrance>
       <div className="presentation-chrome">
         <div className="progress-track" aria-label={`Diapositiva ${current + 1} de ${slides.length}`}><span style={{ width: `${((current + 1) / slides.length) * 100}%` }} /></div>
         <div className="chrome-bottom"><span className="slide-count">{String(current + 1).padStart(2, '0')} <i>/</i> {String(slides.length).padStart(2, '0')}</span><div className="nav-controls"><button onClick={goPrevious} disabled={current === 0 && currentStep === 0} aria-label="Diapositiva anterior"><ArrowLeft size={16} /></button><button onClick={goNext} disabled={current === slides.length - 1 && currentStep === activeStepCount - 1} aria-label="Diapositiva siguiente"><ArrowRight size={16} /></button></div><span className="keyboard-hint"><MousePointer2 size={13} /> click / ← →</span></div>
