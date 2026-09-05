@@ -298,6 +298,7 @@ const resources = [
   ['Ponytail', 'https://github.com/DietrichGebert/ponytail'],
   ['Grill Me', 'https://www.aihero.dev/skills-grill-me'],
   ['Código y slides', 'https://github.com/Djkde01/qaconf-2026-deck'],
+  ['Spec Template', 'https://github.com/Djkde01/qaconf-2026-deck/blob/main/docs/spec-template.md'],
 ] as const
 
 function ResourcesSlide(_step: number, presentationUrl: string) {
