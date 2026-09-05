@@ -23,24 +23,29 @@ import {
   Zap,
 } from 'lucide-react'
 
+type SlideComponent = () => React.ReactNode
+
 type Slide = {
+  id: string
   eyebrow: string
   title: string
   kicker?: string
+  component: SlideComponent
+  stepCount?: number
 }
 
 const slides: Slide[] = [
-  { eyebrow: 'QA CONF 2026 · 10 MIN', title: 'Spec Driven Development', kicker: 'Calidad asegurada desde el requerimiento' },
-  { eyebrow: '01 / PREMISA', title: 'El problema no era la IA.', kicker: 'Era el requerimiento.' },
-  { eyebrow: '02 / EL ENEMIGO REAL', title: 'La ambigüedad escala.', kicker: 'Y la autonomía también.' },
-  { eyebrow: '03 / ANTES DE LA IA', title: 'Esto ya pasaba antes.', kicker: 'Solo que más lento.' },
-  { eyebrow: '04 / LA PROPUESTA', title: 'Spec Driven Development', kicker: 'Un marco claro antes del código.' },
-  { eyebrow: '05 / ANATOMÍA', title: 'Un buen spec deja poco espacio para suponer.', kicker: 'Seis piezas. Una intención compartida.' },
-  { eyebrow: '06 / CALIDAD', title: 'Que el spec no sea un saludo a la bandera.', kicker: 'Verificable. Automatizado. Revisado.' },
-  { eyebrow: '07 / EN LA PRÁCTICA', title: 'Cómo lo implemento hoy.', kicker: 'El método vive en el flujo.' },
-  { eyebrow: '08 / LO QUE CAMBIA', title: 'Las herramientas cambian.', kicker: 'El objetivo permanece.' },
-  { eyebrow: '09 / REFLEXIÓN', title: 'La calidad no empieza en el código.', kicker: 'Empieza en el spec.' },
-  { eyebrow: '10 / RECURSOS', title: 'Para seguir la conversación.', kicker: 'Llévate el método, no solo las herramientas.' },
+  { id: 'title', eyebrow: 'QA CONF 2026 · 10 MIN', title: 'Spec Driven Development', kicker: 'Calidad asegurada desde el requerimiento', component: TitleSlide },
+  { id: 'premise', eyebrow: '01 / PREMISA', title: 'El problema no era la IA.', kicker: 'Era el requerimiento.', component: PremiseSlide },
+  { id: 'ambiguity', eyebrow: '02 / EL ENEMIGO REAL', title: 'La ambigüedad escala.', kicker: 'Y la autonomía también.', component: AmbiguitySlide },
+  { id: 'comparison', eyebrow: '03 / ANTES DE LA IA', title: 'Esto ya pasaba antes.', kicker: 'Solo que más lento.', component: ComparisonSlide },
+  { id: 'proposal', eyebrow: '04 / LA PROPUESTA', title: 'Spec Driven Development', kicker: 'Un marco claro antes del código.', component: FlowSlide },
+  { id: 'anatomy', eyebrow: '05 / ANATOMÍA', title: 'Un buen spec deja poco espacio para suponer.', kicker: 'Seis piezas. Una intención compartida.', component: AnatomySlide },
+  { id: 'quality', eyebrow: '06 / CALIDAD', title: 'Que el spec no sea un saludo a la bandera.', kicker: 'Verificable. Automatizado. Revisado.', component: QualitySlide },
+  { id: 'practice', eyebrow: '07 / EN LA PRÁCTICA', title: 'Cómo lo implemento hoy.', kicker: 'El método vive en el flujo.', component: PracticeSlide },
+  { id: 'change', eyebrow: '08 / LO QUE CAMBIA', title: 'Las herramientas cambian.', kicker: 'El objetivo permanece.', component: ChangeSlide },
+  { id: 'reflection', eyebrow: '09 / REFLEXIÓN', title: 'La calidad no empieza en el código.', kicker: 'Empieza en el spec.', component: ClosingSlide },
+  { id: 'resources', eyebrow: '10 / RECURSOS', title: 'Para seguir la conversación.', kicker: 'Llévate el método, no solo las herramientas.', component: ResourcesSlide },
 ]
 
 function SlideHeader({ slide }: { slide: Slide }) {
@@ -51,6 +56,28 @@ function SlideHeader({ slide }: { slide: Slide }) {
       {slide.kicker && <p className="slide-kicker">{slide.kicker}</p>}
     </header>
   )
+}
+
+type MotionPrimitiveProps = React.HTMLAttributes<HTMLDivElement>
+
+function SlideEntrance({ children, className = '', ...props }: MotionPrimitiveProps) {
+  return <div className={`motion-slide-entrance ${className}`} {...props}>{children}</div>
+}
+
+function FadeUp({ children, className = '', ...props }: MotionPrimitiveProps) {
+  return <div className={`motion-fade-up ${className}`} {...props}>{children}</div>
+}
+
+function Fade({ children, className = '', ...props }: MotionPrimitiveProps) {
+  return <div className={`motion-fade ${className}`} {...props}>{children}</div>
+}
+
+function Stagger({ children, className = '', ...props }: MotionPrimitiveProps) {
+  return <div className={`motion-stagger ${className}`} {...props}>{children}</div>
+}
+
+function StaggerItem({ children, className = '', ...props }: MotionPrimitiveProps) {
+  return <div className={`motion-stagger-item ${className}`} {...props}>{children}</div>
 }
 
 function BulletList({ items }: { items: string[] }) {
@@ -86,7 +113,13 @@ function TitleSlide() {
         <p className="eyebrow">CONFERENCIA VIRTUAL · SOFTWARE QUALITY</p>
         <h1>Spec Driven <span>Development</span></h1>
         <p className="title-subtitle">Calidad asegurada desde el requerimiento</p>
-        <div className="speaker-meta">\n          <div><span>[Speaker Name]</span><small>[Speaker Role]</small></div>\n          <div className="meta-divider" />\n          <span>[Event Name]</span>\n        </div>\n        <p className="title-hint"><MousePointer2 size={13} /> Usa ← / → o haz click a los lados para navegar</p>\n      </div>
+        <div className="speaker-meta">
+          <div><span>[Speaker Name]</span><small>[Speaker Role]</small></div>
+          <div className="meta-divider" />
+          <span>[Event Name]</span>
+        </div>
+        <p className="title-hint"><MousePointer2 size={13} /> Usa ← / → o haz click a los lados para navegar</p>
+      </div>
       <div className="speaker-placeholder" aria-label="[Speaker Image]">
         <div className="placeholder-grid" />
         <div className="placeholder-avatar"><UserRound size={58} strokeWidth={1} /></div>
@@ -190,7 +223,7 @@ function QualitySlide() {
           <div className="gate gate-one"><span>01</span><strong>TDD + SDD</strong><small>El spec define el comportamiento. Los tests lo vuelven verificable.</small></div>
           <div className="gate gate-two"><span>02</span><strong>CI</strong><small>Unit tests · E2E · lint · type checks</small></div>
           <div className="gate gate-three"><span>03</span><strong>Human in the loop</strong><small>La aprobación final sigue siendo humana.</small></div>
-          <div className="gate gate-four"><span>04</span><strong>RDD</strong><small>La revisión se ata a evidencia / recibo.</small></div>
+          <div className="gate gate-four"><span>04</span><strong>RDD</strong><small>La revisión se ata a evidencia / recibo. Si el código cambia después de aprobarlo, la aprobación deja de ser válida y debe revisarse nuevamente.</small></div>
         </div>
         <div className="quality-side"><ShieldCheck size={42} /><p>La calidad aparece cuando cada capa puede responder: <strong>“¿Cómo lo sabemos?”</strong></p></div>
       </div>
@@ -228,7 +261,7 @@ function ClosingSlide() {
     <section className="slide-frame closing-slide">
       <div className="closing-orbit" aria-hidden="true"><div /><div /><div /></div>
       <p className="eyebrow">10 / REFLEXIÓN FINAL</p><h1>La calidad no empieza<br />en el código.</h1><p className="closing-line">Empieza en el <span>spec.</span></p>
-      <div className="closing-points"><span>Roles que se unifican</span><span>Developer que valida</span><span>QA que define comportamiento</span></div>
+      <div className="closing-points"><span>Desarrollo y QA convergen</span><span>Quien construye también valida</span><span>QA influye desde el comportamiento</span></div>
     </section>
   )
 }
@@ -239,50 +272,69 @@ function ResourcesSlide() {
   return (
     <section className="slide-frame resources-slide">
       <SlideHeader slide={slides[10]} />
-      <div className="resources-layout"><div className="qr-placeholder"><div className="qr-pattern" /><span>[QR Placeholder]</span></div><div className="resource-list">{resources.map((resource, index) => <a href="#resources" key={resource} className="resource-link"><span>0{index + 1}</span><strong>{resource}</strong><small>[Resource Link {index + 1}]</small><ExternalLink size={16} /></a>)}</div></div>
+      <div className="resources-layout"><div className="qr-placeholder"><div className="qr-pattern" /><span>[QR Placeholder]</span></div><div className="resource-list">{resources.map((resource, index) => <a href="#resources" key={resource} className="resource-link" data-slide-interactive><span>0{index + 1}</span><strong>{resource}</strong><small>[Resource Link {index + 1}]</small><ExternalLink size={16} /></a>)}</div></div>
       <p className="resource-footer">Gracias · QA Conf 2026</p>
     </section>
   )
 }
 
-function renderSlide(index: number) {
-  switch (index) {
-    case 0: return <TitleSlide />
-    case 1: return <PremiseSlide />
-    case 2: return <AmbiguitySlide />
-    case 3: return <ComparisonSlide />
-    case 4: return <FlowSlide />
-    case 5: return <AnatomySlide />
-    case 6: return <QualitySlide />
-    case 7: return <PracticeSlide />
-    case 8: return <ChangeSlide />
-    case 9: return <ClosingSlide />
-    case 10: return <ResourcesSlide />
-  }
+function isInteractiveTarget(target: EventTarget | null) {
+  return target instanceof HTMLElement && Boolean(target.closest('button, a, input, textarea, select, [contenteditable="true"], [data-slide-interactive]'))
+}
+
+function isEditableTarget(target: EventTarget | null) {
+  return target instanceof HTMLElement && (target.isContentEditable || Boolean(target.closest('input, textarea, select, [contenteditable="true"]')))
 }
 
 export function PresentationDeck() {
   const [current, setCurrent] = useState(0)
-  const goTo = useCallback((next: number) => setCurrent(Math.max(0, Math.min(slides.length - 1, next))), [])
+  const [currentStep, setCurrentStep] = useState(0)
+  const activeSlide = slides[current]
+  const activeStepCount = activeSlide.stepCount ?? 1
+
+  const goTo = useCallback((next: number) => {
+    setCurrent(Math.max(0, Math.min(slides.length - 1, next)))
+    setCurrentStep(0)
+  }, [])
+
+  const goNext = useCallback(() => {
+    if (currentStep < activeStepCount - 1) {
+      setCurrentStep((step) => step + 1)
+      return
+    }
+    goTo(current + 1)
+  }, [activeStepCount, current, currentStep, goTo])
+
+  const goPrevious = useCallback(() => {
+    if (currentStep > 0) {
+      setCurrentStep((step) => step - 1)
+      return
+    }
+    goTo(current - 1)
+  }, [current, currentStep, goTo])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') { event.preventDefault(); goTo(current + 1) }
-      if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); goTo(current - 1) }
+      if (isInteractiveTarget(event.target) || isEditableTarget(event.target)) return
+      if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') { event.preventDefault(); goNext() }
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); goPrevious() }
       if (event.key === 'Home') { event.preventDefault(); goTo(0) }
       if (event.key === 'End') { event.preventDefault(); goTo(slides.length - 1) }
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [current, goTo])
+  }, [goNext, goPrevious, goTo])
 
   return (
-    <main className="presentation-shell" onClick={(event) => { const target = event.target as HTMLElement; if (target.closest('button, a')) return; goTo(current + (event.clientX >= window.innerWidth / 2 ? 1 : -1)) }}>
+    <main className="presentation-shell" onClick={(event) => {
+      if (isInteractiveTarget(event.target)) return
+      event.clientX >= window.innerWidth / 2 ? goNext() : goPrevious()
+    }}>
       <div className="ambient-grid" aria-hidden="true" />
-      <div className="slide-stage" key={current}>{renderSlide(current)}</div>
+      <SlideEntrance key={activeSlide.id} className="slide-stage">{activeSlide.component()}</SlideEntrance>
       <div className="presentation-chrome">
         <div className="progress-track" aria-label={`Diapositiva ${current + 1} de ${slides.length}`}><span style={{ width: `${((current + 1) / slides.length) * 100}%` }} /></div>
-        <div className="chrome-bottom"><span className="slide-count">{String(current + 1).padStart(2, '0')} <i>/</i> {String(slides.length).padStart(2, '0')}</span><div className="nav-controls"><button onClick={() => goTo(current - 1)} disabled={current === 0} aria-label="Diapositiva anterior"><ArrowLeft size={16} /></button><button onClick={() => goTo(current + 1)} disabled={current === slides.length - 1} aria-label="Diapositiva siguiente"><ArrowRight size={16} /></button></div><span className="keyboard-hint"><MousePointer2 size={13} /> click / ← →</span></div>
+        <div className="chrome-bottom"><span className="slide-count">{String(current + 1).padStart(2, '0')} <i>/</i> {String(slides.length).padStart(2, '0')}</span><div className="nav-controls"><button onClick={goPrevious} disabled={current === 0 && currentStep === 0} aria-label="Diapositiva anterior"><ArrowLeft size={16} /></button><button onClick={goNext} disabled={current === slides.length - 1 && currentStep === activeStepCount - 1} aria-label="Diapositiva siguiente"><ArrowRight size={16} /></button></div><span className="keyboard-hint"><MousePointer2 size={13} /> click / ← →</span></div>
       </div>
     </main>
   )
