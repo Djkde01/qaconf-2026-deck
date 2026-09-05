@@ -150,7 +150,7 @@ function PremiseSlide() {
 
 function AmbiguitySlide() {
   return (
-    <section className="slide-frame split-slide">
+    <section className="slide-frame split-slide ambiguity-slide">
       <SlideHeader slide={slides[2]} />
       <div className="ambiguity-layout">
         <div className="risk-visual" role="img" aria-label="Una línea azul de suposición llega a un nodo de pregunta y continúa como una línea roja hasta el resultado">
