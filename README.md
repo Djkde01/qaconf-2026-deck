@@ -1,35 +1,105 @@
-# qaconf-2026-deck
+# Spec Driven Development: Calidad asegurada desde el requerimiento
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Deck interactivo de la charla presentada en QA Conf 2026.
 
-## Built with v0
+La charla explora cómo el desarrollo asistido y agéntico cambia el punto donde empieza la calidad: no en el código, sino en la definición precisa del requerimiento.
 
-This repository is linked to a [v0](https://v0.app) project. Every merge to `main` will automatically deploy.
+## Sobre la charla
 
-## Resources
+La autonomía amplifica la ambigüedad: un agente puede implementar rápidamente una interpretación equivocada. Spec Driven Development busca reducir ese espacio de interpretación, mientras TDD, CI, Human in the Loop y Receipt Driven Development convierten el spec en un flujo verificable.
 
-- [Spec Driven Development template](./docs/spec-template.md)
+> La calidad no empieza en el código. Empieza en el spec.
 
-## Getting Started
+## Qué encontrarás en este repo
 
-First, run the development server:
+- Deck interactivo de la charla
+- Navegación mediante teclado y click
+- Animaciones progresivas por slide
+- Ejemplo de flujo Spec → Tests → Implementación → Evidencia → Aprobación
+- Template reutilizable de Spec Driven Development
+- Links a las herramientas mencionadas
+
+## Ver las slides
+
+[Ver presentación desplegada](DEPLOYMENT_URL)
+
+- `→` / click derecho: avanzar
+- `←` / click izquierdo: retroceder
+
+Algunas slides contienen estados progresivos internos: avanzar puede revelar el siguiente paso antes de cambiar de slide.
+
+## Spec Driven Development Template
+
+Consulta el [Spec Template](./docs/spec-template.md), cópialo y adáptalo a tu propio flujo de trabajo. Sus secciones principales son:
+
+- Context
+- Requirement
+- Acceptance Criteria
+- Out of Scope
+- Sources
+- Blockers / Blocking
+- Open Questions
+- Verification Plan
+- Evidence
+- Human Review
+
+## Recursos mencionados
+
+- [Gentle AI](https://github.com/Gentleman-Programming/gentle-ai/)
+- [Deep Work Plan](https://deepworkplan.com/)
+- [Ponytail](https://github.com/DietrichGebert/ponytail)
+- [Grill Me](https://www.aihero.dev/skills-grill-me)
+
+## Ejecutar localmente
+
+Requisitos: Node.js y pnpm.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para validar una build de producción:
 
-## Learn More
+```bash
+pnpm build
+pnpm start
+```
 
-To learn more, take a look at the following resources:
+## Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+- [Next.js](https://nextjs.org/)
+- React
+- TypeScript
+- Tailwind CSS
+- Lucide
+- v0
+
+## Estructura principal
+
+```text
+.
+├── app/
+├── components/
+│   └── presentation-deck.tsx
+├── docs/
+│   └── spec-template.md
+├── public/
+└── README.md
+```
+
+## Autor
+
+**Sergio Estrella**
+
+Forward Deployed Engineer
+
+## Evento
+
+QA Conf 2026
+
+## Built with v0
+
+Este repositorio utiliza [v0](https://v0.app) para iterar sobre la interfaz del deck.
